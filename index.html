@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Triple Tic-Tac-Toe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated aurora background -->
+  <div class="bg" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+    <span class="orb orb--3"></span>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <main class="game">
+    <header class="header">
+      <h1 class="title">Triple<span>Tac</span>Toe</h1>
+      <p class="subtitle">
+        Only <strong>3</strong> pieces each — drop a 4th and your
+        <strong>oldest</strong> piece vanishes. No draws. Pure tactics.
+      </p>
+    </header>
+
+    <div class="scoreboard">
+      <div class="score score--x" id="score-x-wrap">
+        <div class="score__head">
+          <span class="score__chip">X</span>
+          <span class="score__label">Player X</span>
+        </div>
+        <span class="score__value" id="score-x">0</span>
+        <div class="pips" id="pips-x" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </div>
+      </div>
+
+      <div class="vs">VS</div>
+
+      <div class="score score--o" id="score-o-wrap">
+        <div class="score__head">
+          <span class="score__chip">O</span>
+          <span class="score__label">Player O</span>
+        </div>
+        <span class="score__value" id="score-o">0</span>
+        <div class="pips" id="pips-o" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="status" id="status" data-player="X" role="status" aria-live="polite">
+      <span class="status__dot"></span>
+      <span class="status__text">Player X's turn</span>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board" data-turn="X" role="grid" aria-label="Game board">
+        <!-- cells injected by script.js -->
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn--primary" id="reset-round" type="button">
+        <span aria-hidden="true">↻</span> New Round
+      </button>
+      <button class="btn" id="reset-all" type="button">Reset Scores</button>
+    </div>
+  </main>
+
+  <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
