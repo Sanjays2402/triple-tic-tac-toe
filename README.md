@@ -13,8 +13,26 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 3. Placing a 4th piece removes that player's **oldest** piece (the one that's pulsing). 
 4. First to line up **3 in a row** — horizontally, vertically, or diagonally — wins.
 
+### Controls
+
+- **Click** a cell to place a piece.
+- Press <kbd>1</kbd>–<kbd>9</kbd> to place on the matching cell (numbered like a numpad, left-to-right, top-to-bottom).
+- Press <kbd>R</kbd> to start a new round.
+
+## Game modes
+
+- **2 Players** — local hot-seat play.
+- **vs Computer** — play against an AI with three difficulty levels:
+  - **Easy** — mostly random, but grabs an obvious win.
+  - **Medium** — wins when it can and blocks your winning move.
+  - **Hard** — looks ahead with a depth-limited **minimax** search adapted for the 3-piece variant.
+
 ## Features
 
+- Single-player **vs Computer** (Easy / Medium / Hard) and local **2-player** mode
+- **Sound effects** via the Web Audio API (no asset files) with a mute toggle
+- **Persistent scores & settings** saved in `localStorage`
+- **Keyboard controls** (1–9 to place, R for new round)
 - Animated aurora background with glassmorphism UI
 - Neon glowing X/O marks with pop-in animations
 - Live piece pips + a warning pulse on the piece about to vanish
