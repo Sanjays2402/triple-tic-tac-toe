@@ -2,9 +2,13 @@
 
 A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces on the board**. Place a 4th piece and your **oldest** one disappears — so the game can never end in a draw. Pure tactics.
 
-![Made with HTML](https://img.shields.io/badge/HTML-5-e34f26)
-![Made with CSS](https://img.shields.io/badge/CSS-3-1572b6)
-![Made with JS](https://img.shields.io/badge/JavaScript-vanilla-f7df1e)
+![React](https://img.shields.io/badge/React-18-61dafb)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)
+![Vite](https://img.shields.io/badge/Vite-8-646cff)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8)
+![Framer Motion](https://img.shields.io/badge/Framer%20Motion-12-ff44aa)
+
+**▶ Play it live:** https://sanjays2402.github.io/triple-tic-tac-toe/
 
 ## How to play
 
@@ -34,27 +38,50 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 - **Persistent scores & settings** saved in `localStorage`
 - **Keyboard controls** (1–9 to place, R for new round)
 - Animated aurora background with glassmorphism UI
-- Neon glowing X/O marks with pop-in animations
-- Live piece pips + a warning pulse on the piece about to vanish
-- Glowing scoreboard with active-player highlight
+- **3D tilt board** that responds to your pointer (Framer Motion spring physics)
+- Neon glowing X/O marks with spring pop-in and blur-out animations
+- Animated SVG **winning line** + a warning pulse on the piece about to vanish
+- Sliding shared-layout segmented controls and an animated scoreboard
 - Confetti burst in the winner's colors
 - Fully responsive and respects `prefers-reduced-motion`
-- Zero dependencies — plain HTML, CSS, and JavaScript
+
+## Tech stack
+
+- **React 18** + **TypeScript** + **Vite**
+- **Tailwind CSS v4** for styling
+- **Framer Motion** for animations (3D tilt, springs, shared layout, `AnimatePresence`)
+- **lucide-react** icons and **canvas-confetti**
+- Deployed automatically to **GitHub Pages** via **GitHub Actions**
 
 ## Run locally
 
-Just open `index.html` in any modern browser:
-
 ```bash
-open index.html      # macOS
-# or simply double-click the file
+npm install      # install dependencies
+npm run dev      # start the dev server (http://localhost:5173/triple-tic-tac-toe/)
+npm run build    # type-check and build for production
+npm run preview  # preview the production build
 ```
 
 ## Project structure
 
 ```
 triple-tic-tac-toe/
-├── index.html   # markup
-├── style.css    # all styling & animations
-└── script.js    # game logic, pips, and confetti
+├── index.html              # Vite entry
+├── src/
+│   ├── main.tsx            # app bootstrap
+│   ├── App.tsx             # layout & UI composition
+│   ├── index.css           # Tailwind theme + keyframes
+│   ├── game/
+│   │   ├── engine.ts       # pure 3-piece game logic
+│   │   └── ai.ts           # Easy/Medium/Hard computer opponent (minimax)
+│   ├── hooks/
+│   │   ├── useGame.ts      # game state, AI, scoring, confetti
+│   │   ├── useSound.ts     # Web Audio sound effects
+│   │   └── useLocalStorage.ts
+│   └── components/
+│       ├── Background.tsx  # animated aurora
+│       ├── Board.tsx       # 3D tilt board + winning line
+│       ├── Cell.tsx        # animated neon cell
+│       └── Seg.tsx         # segmented control
+└── .github/workflows/deploy.yml  # CI build & Pages deploy
 ```

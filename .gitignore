@@ -1,3 +1,11 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-ssr/
+*.tsbuildinfo
+
 # macOS
 .DS_Store
 .AppleDouble
@@ -14,3 +22,8 @@ npm-debug.log*
 
 # OS / misc
 Thumbs.db
+
+# Env
+*.local
+.env
+.env.*
