@@ -49,7 +49,7 @@ export function Seg<T extends string>({
                   background:
                     accent === "violet"
                       ? "linear-gradient(100deg,#a78bfa,#6366f1)"
-                      : "linear-gradient(100deg,#22d3ee,#fb5fa0)",
+                      : "linear-gradient(100deg,var(--color-neon-x),var(--color-neon-o))",
                   boxShadow: "0 6px 16px -8px rgba(167,139,250,.9)",
                 }}
               />

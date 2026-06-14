@@ -17,10 +17,13 @@ export const HUMAN: Player = "X";
 export const CPU: Player = "O";
 
 function fireConfetti(winner: Player) {
+  const css = getComputedStyle(document.documentElement);
+  const read = (name: string, fallback: string) =>
+    css.getPropertyValue(name).trim() || fallback;
   const colors =
     winner === "X"
-      ? ["#22d3ee", "#67e8f9", "#a78bfa", "#ffffff"]
-      : ["#fb5fa0", "#fda4d0", "#a78bfa", "#ffffff"];
+      ? [read("--color-neon-x", "#22d3ee"), read("--color-neon-xs", "#67e8f9"), "#a78bfa", "#ffffff"]
+      : [read("--color-neon-o", "#fb5fa0"), read("--color-neon-os", "#fda4d0"), "#a78bfa", "#ffffff"];
   confetti({
     particleCount: 150,
     spread: 95,
