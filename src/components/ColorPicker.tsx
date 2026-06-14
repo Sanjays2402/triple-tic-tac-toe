@@ -32,7 +32,7 @@ export function ColorPicker({ player, label, value, onChange }: ColorPickerProps
               aria-label={c.name}
               title={c.name}
               onClick={() => onChange(c.id)}
-              className="relative grid h-6 w-6 place-items-center rounded-full transition active:scale-90"
+              className="relative grid h-6 w-6 place-items-center rounded-full transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 active:scale-90"
               style={{
                 background: c.base,
                 boxShadow: active
