@@ -53,7 +53,7 @@ export function Board({ state, locked, onCellClick }: BoardProps) {
         <div
           className="pointer-events-none absolute inset-0 rounded-[26px] opacity-60"
           style={{
-            background: "linear-gradient(145deg, rgba(34,211,238,.12), rgba(251,95,160,.12))",
+            background: "linear-gradient(145deg, color-mix(in srgb, var(--color-neon-x) 12%, transparent), color-mix(in srgb, var(--color-neon-o) 12%, transparent))",
           }}
         />
         <div

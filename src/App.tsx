@@ -3,10 +3,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Bot, RotateCcw, Users, Volume2, VolumeX } from "lucide-react";
 import { Background } from "./components/Background";
 import { Board } from "./components/Board";
+import { ColorPicker } from "./components/ColorPicker";
 import { Seg } from "./components/Seg";
 import { HUMAN, useGame } from "./hooks/useGame";
 import type { Mode } from "./hooks/useGame";
 import { useSound } from "./hooks/useSound";
+import { useColors } from "./hooks/useColors";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import type { Difficulty } from "./game/ai";
 
@@ -14,6 +16,7 @@ export default function App() {
   const [muted, setMuted] = useLocalStorage("ttt:muted", false);
   const [mode, setMode] = useLocalStorage<Mode>("ttt:mode", "2p");
   const [difficulty, setDifficulty] = useLocalStorage<Difficulty>("ttt:difficulty", "medium");
+  const { colors, setColor } = useColors();
   const sound = useSound(muted);
   const { state, scores, thinking, humanMove, newRound, resetScores } = useGame(
     sound,
@@ -50,8 +53,8 @@ export default function App() {
   const statusColor = state.winner
     ? "#4ade80"
     : state.current === "X"
-      ? "#22d3ee"
-      : "#fb5fa0";
+      ? colors.X.base
+      : colors.O.base;
 
   return (
     <>
@@ -129,6 +132,26 @@ export default function App() {
                 </motion.div>
               )}
             </AnimatePresence>
+            <div className="mt-1 flex w-full flex-col gap-2 rounded-2xl border border-white/10 bg-black/30 px-3 py-2.5">
+              <ColorPicker
+                player="X"
+                label={cpu ? "You" : "Player X"}
+                value={colors.X.id}
+                onChange={(id) => {
+                  sound.click();
+                  setColor("X", id);
+                }}
+              />
+              <ColorPicker
+                player="O"
+                label={cpu ? "Computer" : "Player O"}
+                value={colors.O.id}
+                onChange={(id) => {
+                  sound.click();
+                  setColor("O", id);
+                }}
+              />
+            </div>
           </div>
 
           {/* scoreboard */}
@@ -137,6 +160,7 @@ export default function App() {
               player="X"
               label={cpu ? "You" : "Player X"}
               value={scores.X}
+              color={colors.X.base}
               active={!state.winner && state.current === "X"}
             />
             <div className="self-center font-mono text-xs font-bold tracking-widest text-slate-500">
@@ -146,6 +170,7 @@ export default function App() {
               player="O"
               label={cpu ? "Computer" : "Player O"}
               value={scores.O}
+              color={colors.O.base}
               active={!state.winner && state.current === "O"}
             />
           </div>
@@ -184,7 +209,7 @@ export default function App() {
               }}
               className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 font-bold text-[#06121a] transition hover:brightness-110 active:scale-[0.98]"
               style={{
-                background: "linear-gradient(100deg,#22d3ee,#a78bfa,#fb5fa0)",
+                background: "linear-gradient(100deg,var(--color-neon-x),#a78bfa,var(--color-neon-o))",
                 boxShadow: "0 12px 28px -12px rgba(167,139,250,.9)",
               }}
             >
@@ -215,14 +240,15 @@ function ScoreCard({
   player,
   label,
   value,
+  color,
   active,
 }: {
   player: "X" | "O";
   label: string;
   value: number;
+  color: string;
   active: boolean;
 }) {
-  const color = player === "X" ? "#22d3ee" : "#fb5fa0";
   return (
     <motion.div
       animate={{ y: active ? -3 : 0 }}

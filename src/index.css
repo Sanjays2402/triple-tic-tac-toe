@@ -31,11 +31,15 @@
 /* Neon marks (X / O) */
 .neon-x {
   color: var(--color-neon-x);
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.7), 0 0 30px rgba(34, 211, 238, 0.35);
+  text-shadow:
+    0 0 12px color-mix(in srgb, var(--color-neon-x) 70%, transparent),
+    0 0 30px color-mix(in srgb, var(--color-neon-x) 35%, transparent);
 }
 .neon-o {
   color: var(--color-neon-o);
-  text-shadow: 0 0 12px rgba(251, 95, 160, 0.7), 0 0 30px rgba(251, 95, 160, 0.35);
+  text-shadow:
+    0 0 12px color-mix(in srgb, var(--color-neon-o) 70%, transparent),
+    0 0 30px color-mix(in srgb, var(--color-neon-o) 35%, transparent);
 }
 
 /* Ambient animations */
