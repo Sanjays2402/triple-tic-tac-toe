@@ -3,12 +3,13 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
-  "description": "Neon Triple Tic-Tac-Toe — a 3-piece variant built with React, TypeScript, Vite, Tailwind & Framer Motion.",
+  "description": "Neon Triple Tic-Tac-Toe \u2014 a 3-piece variant built with React, TypeScript, Vite, Tailwind & Framer Motion.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "tsc -b"
+    "lint": "tsc -b",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

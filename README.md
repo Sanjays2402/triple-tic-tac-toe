@@ -55,9 +55,12 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 
 ## Run locally
 
+Use Node.js 22.18 or newer to run the TypeScript engine tests.
+
 ```bash
 npm install      # install dependencies
 npm run dev      # start the dev server (http://localhost:5173/triple-tic-tac-toe/)
+npm test         # run game-engine regression tests
 npm run build    # type-check and build for production
 npm run preview  # preview the production build
 ```

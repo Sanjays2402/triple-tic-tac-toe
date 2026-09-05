@@ -40,6 +40,7 @@ export function checkWin(board: Board, player: Player): number[] | null {
 
 /** Returns a new immutable state with the move applied (or the same state if illegal). */
 export function applyMove(state: GameState, index: number): GameState {
+  if (!Number.isInteger(index) || index < 0 || index >= state.board.length) return state;
   if (state.winner || state.board[index]) return state;
 
   const board = state.board.slice();
