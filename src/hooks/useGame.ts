@@ -38,20 +38,42 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
   const [state, setState] = useState<GameState>(initialState);
   const [scores, setScores] = useLocalStorage<Scores>("ttt:scores", { X: 0, O: 0 });
   const [thinking, setThinking] = useState(false);
+  const [history, setHistory] = useState<GameState[]>([]);
   const prevRef = useRef<GameState | null>(null);
+  // Fresh handle on state for event handlers (updaters must stay side-effect free).
+  const stateRef = useRef(state);
+  stateRef.current = state;
 
-  const commit = useCallback((index: number) => {
-    setState((prev) => (prev.winner || prev.board[index] ? prev : applyMove(prev, index)));
+  // Applies a legal move; records the pre-move state so it can be undone.
+  const commit = useCallback((prev: GameState, index: number) => {
+    if (prev.winner || prev.board[index]) return prev;
+    setHistory((h) => [...h, prev]);
+    return applyMove(prev, index);
   }, []);
 
   const humanMove = useCallback(
     (index: number) => {
-      if (state.winner || thinking) return;
-      if (mode === "cpu" && state.current !== HUMAN) return;
-      commit(index);
+      const prev = stateRef.current;
+      if (prev.winner || thinking) return;
+      if (mode === "cpu" && prev.current !== HUMAN) return;
+      setState(commit(prev, index));
     },
-    [state, thinking, mode, commit]
+    [thinking, mode, commit]
   );
+
+  // Undo the last move (in vs-Computer mode: take back the computer's reply too).
+  const undo = useCallback(() => {
+    if (thinking || state.winner) return;
+    const steps = mode === "cpu" ? 2 : 1;
+    if (history.length < steps) return;
+    const restored = history[history.length - steps];
+    prevRef.current = restored; // keep the sound effect from re-firing on revert
+    setHistory(history.slice(0, history.length - steps));
+    setState(restored);
+  }, [history, mode, state.winner, thinking]);
+
+  const canUndo =
+    !thinking && !state.winner && history.length >= (mode === "cpu" ? 2 : 1);
 
   // Computer's turn
   useEffect(() => {
@@ -63,7 +85,7 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
     const id = window.setTimeout(() => {
       const move = chooseMove(state, CPU, HUMAN, difficulty);
       setThinking(false);
-      commit(move);
+      setState(commit(state, move));
     }, 450 + Math.random() * 350);
     return () => window.clearTimeout(id);
   }, [state, mode, difficulty, commit]);
@@ -93,6 +115,7 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
 
   const newRound = useCallback(() => {
     prevRef.current = null;
+    setHistory([]);
     setState(initialState());
     setThinking(false);
   }, []);
@@ -102,5 +125,5 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
     newRound();
   }, [newRound, setScores]);
 
-  return { state, scores, thinking, humanMove, newRound, resetScores };
+  return { state, scores, thinking, humanMove, undo, canUndo, newRound, resetScores };
 }

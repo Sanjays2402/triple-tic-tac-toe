@@ -22,6 +22,7 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 - **Click** a cell to place a piece.
 - Press <kbd>1</kbd>–<kbd>9</kbd> to place on the matching cell (numbered like a numpad, left-to-right, top-to-bottom).
 - Press <kbd>R</kbd> to start a new round.
+- Press <kbd>U</kbd> (or the **Undo** button) to take back your last move — in **vs Computer** mode this also takes back the computer's reply.
 
 ## Game modes
 
@@ -34,6 +35,7 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 ## Features
 
 - Single-player **vs Computer** (Easy / Medium / Hard) and local **2-player** mode
+- **Undo** — take back your last move (plus the computer's reply in vs-Computer mode) via button or <kbd>U</kbd>
 - **Sound effects** via the Web Audio API (no asset files) with a mute toggle
 - **Persistent scores & settings** saved in `localStorage`
 - **Keyboard controls** (1–9 to place, R for new round)
@@ -76,15 +78,18 @@ triple-tic-tac-toe/
 │   ├── index.css           # Tailwind theme + keyframes
 │   ├── game/
 │   │   ├── engine.ts       # pure 3-piece game logic
-│   │   └── ai.ts           # Easy/Medium/Hard computer opponent (minimax)
+│   │   ├── ai.ts           # Easy/Medium/Hard computer opponent (minimax)
+│   │   └── colors.ts       # player color palettes
 │   ├── hooks/
-│   │   ├── useGame.ts      # game state, AI, scoring, confetti
+│   │   ├── useGame.ts      # game state, AI, scoring, confetti, undo history
 │   │   ├── useSound.ts     # Web Audio sound effects
+│   │   ├── useColors.ts    # persisted player color selection
 │   │   └── useLocalStorage.ts
 │   └── components/
 │       ├── Background.tsx  # animated aurora
 │       ├── Board.tsx       # 3D tilt board + winning line
 │       ├── Cell.tsx        # animated neon cell
+│       ├── ColorPicker.tsx # player color picker
 │       └── Seg.tsx         # segmented control
 └── .github/workflows/deploy.yml  # CI build & Pages deploy
 ```

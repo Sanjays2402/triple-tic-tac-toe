@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, RotateCcw, Users, Volume2, VolumeX } from "lucide-react";
+import { Undo2, Bot, RotateCcw, Users, Volume2, VolumeX } from "lucide-react";
 import { Background } from "./components/Background";
 import { Board } from "./components/Board";
 import { ColorPicker } from "./components/ColorPicker";
@@ -18,7 +18,7 @@ export default function App() {
   const [difficulty, setDifficulty] = useLocalStorage<Difficulty>("ttt:difficulty", "medium");
   const { colors, setColor } = useColors();
   const sound = useSound(muted);
-  const { state, scores, thinking, humanMove, newRound, resetScores } = useGame(
+  const { state, scores, thinking, humanMove, undo, canUndo, newRound, resetScores } = useGame(
     sound,
     mode,
     difficulty
@@ -26,15 +26,16 @@ export default function App() {
 
   const cpu = mode === "cpu";
 
-  // Keyboard controls: 1–9 place, R for a new round.
+  // Keyboard controls: 1–9 place, R for a new round, U to undo.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key >= "1" && e.key <= "9") humanMove(Number(e.key) - 1);
       else if (e.key.toLowerCase() === "r") newRound();
+      else if (e.key.toLowerCase() === "u") undo();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [humanMove, newRound]);
+  }, [humanMove, newRound, undo]);
 
   const status = state.winner
     ? cpu
@@ -219,6 +220,21 @@ export default function App() {
               type="button"
               onClick={() => {
                 sound.click();
+                undo();
+              }}
+              disabled={!canUndo}
+              aria-label="Undo last move"
+              title="Undo last move (U)"
+              className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-slate-200 transition hover:bg-white/10 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-white/5"
+            >
+              <span className="inline-flex items-center justify-center gap-2">
+                <Undo2 size={17} /> Undo
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                sound.click();
                 resetScores();
               }}
               className="flex-1 rounded-xl border border-white/10 bg-white/5 py-3 font-semibold text-slate-200 transition hover:bg-white/10 active:scale-[0.98]"
@@ -228,7 +244,8 @@ export default function App() {
           </div>
 
           <p className="mt-4 text-xs text-slate-500">
-            Press <Kbd>1</Kbd>–<Kbd>9</Kbd> to place · <Kbd>R</Kbd> for new round
+            Press <Kbd>1</Kbd>–<Kbd>9</Kbd> to place · <Kbd>R</Kbd> for new round ·{" "}
+            <Kbd>U</Kbd> to undo
           </p>
         </motion.div>
       </main>
