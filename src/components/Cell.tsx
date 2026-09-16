@@ -8,6 +8,7 @@ interface CellProps {
   disabled: boolean;
   fading: boolean;
   highlight: boolean;
+  hint: boolean;
   onClick: (i: number) => void;
 }
 
@@ -18,6 +19,7 @@ export function Cell({
   disabled,
   fading,
   highlight,
+  hint,
   onClick,
 }: CellProps) {
   return (
@@ -77,6 +79,15 @@ export function Cell({
           className="pointer-events-none absolute inset-0 rounded-2xl bg-neon-win/15 ring-2 ring-neon-win"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+        />
+      )}
+
+      {/* hint pulse on the suggested cell */}
+      {hint && !value && (
+        <motion.span
+          className="pointer-events-none absolute inset-0 rounded-2xl ring-2 ring-cyan-300/80"
+          animate={{ opacity: [0.9, 0.25, 0.9], scale: [1, 0.96, 1] }}
+          transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }}
         />
       )}
     </motion.button>

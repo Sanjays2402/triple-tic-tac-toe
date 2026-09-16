@@ -39,6 +39,7 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
   const [scores, setScores] = useLocalStorage<Scores>("ttt:scores", { X: 0, O: 0 });
   const [thinking, setThinking] = useState(false);
   const [history, setHistory] = useState<GameState[]>([]);
+  const [hintIndex, setHintIndex] = useState<number | null>(null);
   const prevRef = useRef<GameState | null>(null);
   // Fresh handle on state for event handlers (updaters must stay side-effect free).
   const stateRef = useRef(state);
@@ -47,9 +48,19 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
   // Applies a legal move; records the pre-move state so it can be undone.
   const commit = useCallback((prev: GameState, index: number) => {
     if (prev.winner || prev.board[index]) return prev;
+    setHintIndex(null); // any move invalidates the old hint
     setHistory((h) => [...h, prev]);
     return applyMove(prev, index);
   }, []);
+
+  // Highlight the strongest move for the current player (hard-AI search).
+  const requestHint = useCallback(() => {
+    const s = stateRef.current;
+    if (s.winner || mode === "cpu" && s.current !== HUMAN) return;
+    const me = s.current;
+    const opp: Player = me === "X" ? "O" : "X";
+    setHintIndex(chooseMove(s, me, opp, "hard"));
+  }, [mode]);
 
   const humanMove = useCallback(
     (index: number) => {
@@ -116,6 +127,7 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
   const newRound = useCallback(() => {
     prevRef.current = null;
     setHistory([]);
+    setHintIndex(null);
     setState(initialState());
     setThinking(false);
   }, []);
@@ -125,5 +137,5 @@ export function useGame(sound: Sound, mode: Mode, difficulty: Difficulty) {
     newRound();
   }, [newRound, setScores]);
 
-  return { state, scores, thinking, humanMove, undo, canUndo, newRound, resetScores };
+  return { state, scores, thinking, hintIndex, humanMove, undo, canUndo, newRound, resetScores, requestHint };
 }

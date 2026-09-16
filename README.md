@@ -23,6 +23,7 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 - Press <kbd>1</kbd>–<kbd>9</kbd> to place on the matching cell (numbered like a numpad, left-to-right, top-to-bottom).
 - Press <kbd>R</kbd> to start a new round.
 - Press <kbd>U</kbd> (or the **Undo** button) to take back your last move — in **vs Computer** mode this also takes back the computer's reply.
+- Press <kbd>H</kbd> (or the **Hint** button) to highlight the strongest move for the current player.
 
 ## Game modes
 
@@ -36,6 +37,7 @@ A neon-styled twist on Tic-Tac-Toe where **each player can have at most 3 pieces
 
 - Single-player **vs Computer** (Easy / Medium / Hard) and local **2-player** mode
 - **Undo** — take back your last move (plus the computer's reply in vs-Computer mode) via button or <kbd>U</kbd>
+- **Hint** — highlight the current player's strongest move (hard-AI search) via the Hint button or <kbd>H</kbd>; the highlight clears as soon as any move is made
 - **Sound effects** via the Web Audio API (no asset files) with a mute toggle
 - **Persistent scores & settings** saved in `localStorage`
 - **Keyboard controls** (1–9 to place, R for new round)

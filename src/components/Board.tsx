@@ -7,12 +7,13 @@ import type { GameState } from "../game/engine";
 interface BoardProps {
   state: GameState;
   locked: boolean;
+  hintIndex: number | null;
   onCellClick: (i: number) => void;
 }
 
 const center = (i: number) => ({ x: (i % 3) + 0.5, y: Math.floor(i / 3) + 0.5 });
 
-export function Board({ state, locked, onCellClick }: BoardProps) {
+export function Board({ state, locked, hintIndex, onCellClick }: BoardProps) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [9, -9]), {
@@ -69,6 +70,7 @@ export function Board({ state, locked, onCellClick }: BoardProps) {
               disabled={locked || !!v || !!state.winner}
               fading={i === fadingIndex}
               highlight={winSet.has(i)}
+              hint={i === hintIndex}
               onClick={onCellClick}
             />
           ))}

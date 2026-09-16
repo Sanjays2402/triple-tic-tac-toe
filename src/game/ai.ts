@@ -4,7 +4,7 @@
 //  - hard:   depth-limited minimax with alpha-beta pruning
 
 import type { Board, GameState, Player } from "./engine";
-import { LINES, MAX_PIECES } from "./engine";
+import { LINES, MAX_PIECES } from "./engine.ts";
 
 export type Difficulty = "easy" | "medium" | "hard";
 
